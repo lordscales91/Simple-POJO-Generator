@@ -12,6 +12,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PojoGenerator {
@@ -76,17 +77,28 @@ public class PojoGenerator {
 	}
 
 	public static void generate(Connection con, String[] tables) {
+		List<String> tableList=null;
+		if(tables!=null) {
+			tableList=Arrays.asList(tables);
+		}
+		generate(con, tableList);
+	}
+
+	public static void generate(Connection con, List<String> tables) {
 		try {
 			
 			if (tables == null) {
 				// obtain the tables
-				List<String> tableList=new ArrayList<>();
+				tables=new ArrayList<>();
 				DatabaseMetaData dbmeta = con.getMetaData();
 				ResultSet rs = dbmeta.getTables(con.getCatalog(), null, "%", null);
 				while(rs.next()) {
-					tableList.add(rs.getString("TABLE_NAME"));
+					if(rs.getString("TABLE_TYPE").equals("TABLE")) {
+						//Normally we want to create POJOs only for 
+						//Standard Tables (No Views, Temporary Tables...)
+						tables.add(rs.getString("TABLE_NAME"));						
+					}					
 				}
-				tables=tableList.toArray(new String[]{});
 			}
 			File pojoDir=new File("pojos");
 			if(!pojoDir.exists()) {
