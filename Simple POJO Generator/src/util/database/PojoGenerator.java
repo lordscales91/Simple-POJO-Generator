@@ -15,25 +15,28 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import extra.utils.StringUtil;
+
 public class PojoGenerator {
 
 	/**
-	 * usage: -host <em>database_url(JDBC Conn String)</em> -u <em>user</em> [-p
+	 * usage: -host <em>database_url(JDBC Conn String)</em> [-u <em>user</em>] [-p
 	 * <em>passwd</em>] [-drv <em>jdbc.driver</em>][-tables
 	 * <em>table1,table2,...</em>]<br/><br/>
-	 * You must specify the host, it must be a valid JDBC Connection string.<br/>
-	 * You must also specify the user, password defaults to an empty string.<br/>
+	 * You must specify the host, it must be a valid <a href="http://www.java2s.com/Tutorial/Java/0340__Database/AListofJDBCDriversconnectionstringdrivername.htm">
+	 * JDBC Connection string</a>.<br/>
+	 * User defaults to "root", password defaults to an empty string.<br/>
 	 * This is designed to work with MySQL, but you can use it for other database systems, 
-	 * in order to do it you must specify the full Class name of the Driver (and it must be in the 
-	 * classpath).<br/>
+	 * in order to do it you must specify the full Class name of the Driver (and it must be loaded 
+	 * in the classpath).<br/>
 	 * If you don't want to generate POJOs for all the tables of the Schema specified you can 
-	 * provide a comma-separated list of table names.
+	 * provide a comma-separated list of table names(no spaces).
 	 */
 	public static void main(String[] args) {
 		if (args.length >= 4 && args.length % 2 == 0) {
 			String driver = "com.mysql.jdbc.Driver";
 			String host = null;
-			String user = null;
+			String user = "root";
 			String passwd = "";
 			String[] tables = null;
 			for (int i = 0; i < args.length; i += 2) {
@@ -54,7 +57,7 @@ public class PojoGenerator {
 					}
 				}
 			}
-			if (host != null && user != null) {
+			if (host != null) {
 				try {
 					Class.forName(driver);
 					Connection con = DriverManager.getConnection(host, user,
@@ -106,7 +109,7 @@ public class PojoGenerator {
 				System.out.println("pojos dir created");
 			}
 			for (String table : tables) {
-				String pojoName = toCamelCase(table);
+				String pojoName = StringUtil.toCamelCase(table);
 				File pojo=new File(pojoDir, pojoName+".java");
 				FileWriter fw=new FileWriter(pojo);
 				BufferedWriter bw=new BufferedWriter(fw);
@@ -152,22 +155,6 @@ public class PojoGenerator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-	}
-
-	public static String toCamelCase(String str) {
-		String result=str.substring(0, 1).toUpperCase();
-		if(str.contains("_")) {
-			String[] aux=str.split("_");
-			result+=aux[0].substring(1).toLowerCase();
-			for(int i=1;i<aux.length;i++) {
-				result+=aux[i].substring(0, 1).toUpperCase();
-				result+=aux[i].substring(1).toLowerCase();
-			}
-		} else {
-			result+=str.substring(1);
-		}
-		return result;
 	}
 
 }
