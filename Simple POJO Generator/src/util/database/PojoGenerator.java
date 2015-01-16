@@ -22,13 +22,13 @@ public class PojoGenerator {
 	/**
 	 * usage: -host <em>database_url(JDBC Conn String)</em> [-u <em>user</em>] [-p
 	 * <em>passwd</em>] [-drv <em>jdbc.driver</em>][-tables
-	 * <em>table1,table2,...</em>]<br/><br/>
+	 * <em>table1,table2,...</em>]<p>
 	 * You must specify the host, it must be a valid <a href="http://www.java2s.com/Tutorial/Java/0340__Database/AListofJDBCDriversconnectionstringdrivername.htm">
-	 * JDBC Connection string</a>.<br/>
-	 * User defaults to "root", password defaults to an empty string.<br/>
+	 * JDBC Connection string</a>.<p>
+	 * User defaults to "root", password defaults to an empty string.
 	 * This is designed to work with MySQL, but you can use it for other database systems, 
 	 * in order to do it you must specify the full Class name of the Driver (and it must be loaded 
-	 * in the classpath).<br/>
+	 * in the classpath).<p>
 	 * If you don't want to generate POJOs for all the tables of the Schema specified you can 
 	 * provide a comma-separated list of table names(no spaces).
 	 */
@@ -78,7 +78,12 @@ public class PojoGenerator {
 		}
 
 	}
-
+	/**
+	 * Provided a Connection object and an optional array of tables it will generate
+	 * the POJOs for those tables or all the tables in the DB if null
+	 * @param con JDBC Connection object
+	 * @param tables list of tables, can be null
+	 */
 	public static void generate(Connection con, String[] tables) {
 		List<String> tableList=null;
 		if(tables!=null) {
@@ -86,7 +91,12 @@ public class PojoGenerator {
 		}
 		generate(con, tableList);
 	}
-
+	/**
+	 * Provided a Connection object and an optional List of tables it will generate
+	 * the POJOs for those tables or all the tables in the DB if null
+	 * @param con JDBC Connection object
+	 * @param tables list of tables, can be null
+	 */
 	public static void generate(Connection con, List<String> tables) {
 		try {
 			
