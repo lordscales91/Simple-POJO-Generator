@@ -2,6 +2,7 @@
 =====================
 
 This is a simple program that uses JDBC to generate simple POJOs. That means, POJOs using just simple types, dates and timestamps are treated as *Strings*, actually it only generates the private fields with no constructors neither *getters* or *setters*, but if you are using a good IDE like [Eclipse](http://www.eclipse.org/) surely it provides some auto-generate tools for that purposes.
+**Note:** You can find the JavaDoc documentation at http://lordscales91.github.io/Simple-POJO-Generator/
 
 **Usage**
 -------
