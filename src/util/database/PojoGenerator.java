@@ -33,7 +33,7 @@ public class PojoGenerator {
 	 * provide a comma-separated list of table names(no spaces).
 	 */
 	public static void main(String[] args) {
-		if (args.length >= 4 && args.length % 2 == 0) {
+		if (args.length >= 2 && args.length % 2 == 0) {
 			String driver = "com.mysql.jdbc.Driver";
 			String host = null;
 			String user = "root";
@@ -113,23 +113,13 @@ public class PojoGenerator {
 					}					
 				}
 			}
-			File pojoDir=new File("pojos");
-			if(!pojoDir.exists()) {
-				pojoDir.mkdir();
-				System.out.println("pojos dir created");
-			}
+			String packageName="pojos";//This may be introduced as a parameter in the future
+			File pojoDir=new File("pojos");	
+			List<PojoObject> pojos=new ArrayList<>();
 			for (String table : tables) {
 				String pojoName = StringUtil.toCamelCase(table);
-				File pojo=new File(pojoDir, pojoName+".java");
-				FileWriter fw=new FileWriter(pojo);
-				BufferedWriter bw=new BufferedWriter(fw);
+				PojoObject pojo=new PojoObject(packageName, pojoName);
 				System.out.println("Creating POJO for "+table+"...");
-				bw.write("package pojos;");
-				bw.newLine();
-				bw.newLine();
-				bw.write("public class "+pojoName+" {");
-				bw.newLine();
-				bw.newLine();
 				Statement stmt=con.createStatement();
 				ResultSet rs=stmt.executeQuery("SELECT * FROM "+table);
 				ResultSetMetaData rsmeta = rs.getMetaData();
@@ -140,21 +130,21 @@ public class PojoGenerator {
 						type= "String";
 					}else if(type.equalsIgnoreCase("integer")) {
 						type="int";
-					}  else if (type.equals("BigInteger")) {
-						type=clsName;//use full class name since we can't move back and import it
+					} else if (type.contains("[B")) {//Fix conversion of binary types
+						type="byte[]";			
+					} else if (!clsName.contains("java.lang.")) {//if it's not in the java.lang pkg 
+						pojo.addImport(clsName);			//we need to import it
 					} else if (!type.equals("String")) {
 						type=type.toLowerCase();
 					}
-					System.out.println("Adding field for "+rsmeta.getColumnLabel(i));
-					bw.write("private "+type+" "+rsmeta.getColumnLabel(i)+";");
-					bw.newLine();
+					String fieldName = rsmeta.getColumnLabel(i);
+					System.out.println("Adding field for "+fieldName);
+					pojo.addField(type, fieldName);					
 				}
-				bw.newLine();
-				bw.write("}");
-				bw.close();
-				fw.close();	
+				pojos.add(pojo);
 				System.out.println("************************************");
 			}
+			writePojos(pojoDir, pojos);
 			System.out.println("FINISHED");
 			
 			
@@ -164,6 +154,43 @@ public class PojoGenerator {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	public static void writePojos(File pojoDir, List<PojoObject> pojos)
+			throws IOException {
+		if(!pojoDir.exists()) {
+			pojoDir.mkdir();
+			System.out.println("pojos dir created");
+		}
+		for(PojoObject p:pojos) {
+			String pojoName=p.getPojoName();
+			File pojo=new File(pojoDir, pojoName+".java");
+			FileWriter fw=new FileWriter(pojo);
+			BufferedWriter bw=new BufferedWriter(fw);		
+			System.out.println("Writing POJO "+pojo.getName()+" ...");
+			bw.write("package pojos;");
+			bw.newLine();
+			bw.newLine();
+			List<String> imports = p.getImports();
+			for (String imp : imports) {
+				bw.write("import "+imp+";");
+				bw.newLine();
+			}
+			bw.newLine();
+			bw.write("public class "+pojoName+" {");
+			bw.newLine();
+			bw.newLine();
+			
+			List<String> fields = p.getFields();				
+			for (String field : fields) {
+				String type=p.getTypeOfField(field);
+				bw.write("private "+type+" "+field+";");
+				bw.newLine();					
+			}
+			bw.newLine();
+			bw.write("}");
+			bw.close();
+			fw.close();
 		}
 	}
 
