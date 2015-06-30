@@ -1,14 +1,18 @@
-**Simple POJO Generator**
+**Simple POJO Generator For Excel ".xlsx"**
 =====================
 
-This is a simple program that uses JDBC to generate simple POJOs. That means, POJOs using just simple types, dates and timestamps are treated as *Strings*, actually it only generates the private fields with no constructors neither *getters* or *setters*, but if you are using a good IDE like [Eclipse](http://www.eclipse.org/) surely it provides some auto-generate tools for that purposes.
+You can generate the POJOs from the Excel ".xlsx" File and from database
+The Original Repository is in https://github.com/lordscales91/Simple-POJO-Generator. It only supports generating POJO from database.
 
-**Note:** You can find the JavaDoc documentation at http://lordscales91.github.io/Simple-POJO-Generator/
 
 **Usage**
 -------
 
--host <em>database_url(JDBC Conn String)</em> [-u <em>user</em>] [-p
+## Generate from Excel ".xlsx" File
+-gen xlsx -i <em>the input ".xlsx" file</em> [-o <em>output directory</em>]
+
+## Generate from Database
+-gen db -host <em>database_url(JDBC Conn String)</em> [-u <em>user</em>] [-p
 	  <em>passwd</em>] [-drv <em>jdbc.driver</em>][-tables
 	  <em>table1,table2,...</em>]<br/>
 	  You must specify the host, it must be a valid [JDBC Connection string](http://www.java2s.com/Tutorial/Java/0340__Database/AListofJDBCDriversconnectionstringdrivername.htm).<br/>
