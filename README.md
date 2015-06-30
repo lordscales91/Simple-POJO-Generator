@@ -11,7 +11,7 @@ The Original Repository is in https://github.com/lordscales91/Simple-POJO-Genera
 ## Generate from Excel ".xlsx" File
 -gen xlsx -i <em>the input ".xlsx" file</em> [-o <em>output directory</em>]
 
-e.g. Run the command java -jar Simple-POJO-Generator.jar -gen xlsx -i /home/chanllen/sample.xlsx -o /home/chanllen/tmp
+e.g. java -jar Simple-POJO-Generator.jar -gen xlsx -i /home/chanllen/sample.xlsx -o /home/chanllen/tmp
 
 
 ## Generate from Database
