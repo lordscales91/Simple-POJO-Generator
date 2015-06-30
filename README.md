@@ -1,7 +1,7 @@
 **Simple POJO Generator For Excel ".xlsx"**
 =====================
 
-You can generate the POJOs from the Excel ".xlsx" File and from database
+You can generate the POJOs from the Excel ".xlsx" File and from database. 
 The Original Repository is in https://github.com/lordscales91/Simple-POJO-Generator. It only supports generating POJO from database.
 
 
@@ -10,6 +10,9 @@ The Original Repository is in https://github.com/lordscales91/Simple-POJO-Genera
 
 ## Generate from Excel ".xlsx" File
 -gen xlsx -i <em>the input ".xlsx" file</em> [-o <em>output directory</em>]
+
+e.g. Run the command java -jar Simple-POJO-Generator.jar -gen xlsx -i /home/chanllen/sample.xlsx -o /home/chanllen/tmp
+
 
 ## Generate from Database
 -gen db -host <em>database_url(JDBC Conn String)</em> [-u <em>user</em>] [-p

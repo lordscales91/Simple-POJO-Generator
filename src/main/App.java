@@ -29,6 +29,8 @@ public class App{
             }else if(generator.equals("xlsx")){
                 System.out.println("Go to PokoXlsGenerator");
                 PojoXlsGenerator.main(newArgs);
+            }else{
+            	System.out.println("Parameter should be 'db' or 'xlsx'");
             }
         }
 
