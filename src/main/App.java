@@ -17,7 +17,11 @@ public class App{
                     generator = param;
                 }
             }
-
+            
+            if(generator == null) {
+            	System.out.println("Parameter should be 'db' or 'xlsx'");
+            	throw new IllegalArgumentException("Invalid Parameters");
+            } 
             generator = generator.toLowerCase();
             String[] newArgs = new String[args.length - 2];
             for(int i = 2;i < args.length;i++){
