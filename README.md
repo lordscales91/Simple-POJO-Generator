@@ -1,10 +1,9 @@
-**Simple POJO Generator For Excel ".xlsx"**
+**Simple POJO Generator**
 =====================
 
 You can generate the POJOs from the Excel ".xlsx" File and from database. The title of the first line is considered as the class attribute and the type of the attribute is determined by the value under of each column
  
-The Original Repository is in https://github.com/lordscales91/Simple-POJO-Generator. It only supports generating POJO from database.
-
+Merged the commits from [chanlen's fork](https://github.com/chanllen/Simple-POJO-Generator)
 
 **Usage**
 -------
